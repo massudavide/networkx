@@ -4,3 +4,4 @@ from networkx.algorithms.shortest_paths.weighted import *
 from networkx.algorithms.shortest_paths.astar import *
 from networkx.algorithms.shortest_paths.dense import *
 from networkx.algorithms.shortest_paths.greedy import *
+from networkx.algorithms.shortest_paths.beam import *
