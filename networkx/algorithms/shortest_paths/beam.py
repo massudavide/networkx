@@ -24,7 +24,7 @@ def beam_path(G, source, target, heuristic=None, weight='weight'):
             return 0
 
     # parametro k che mi dice quanti nodi espandere ogni volta
-    k = 2
+    k = 20
 
     push = heappush
     pop = heappop
@@ -73,8 +73,6 @@ def beam_path(G, source, target, heuristic=None, weight='weight'):
                     continue
 
                 # Skip bad paths that were enqueued before finding a better one
-                # qcost, h = enqueued[curnode]
-                print(nodiIncotrati[curnode])
                 qcost, h, _, __ = nodiIncotrati[curnode]
                 if qcost < dist:
                     continue
@@ -105,8 +103,6 @@ def beam_path(G, source, target, heuristic=None, weight='weight'):
 
         # ordino la mappa dei neighbor secondo euristica
         ordinato = sorted(enqueued.items(), key=lambda x: x[1][1])
-        # ripulisco la mappa in modo da poter caricare i neighbor nell'iterazione successiva
-        enqueued.clear()
 
         # se k è più grande del numero di nodi in ordinato
         # ci sono due casi: o il numero totale di fratelli è minore di k, oppure sto in k foglie
@@ -118,21 +114,15 @@ def beam_path(G, source, target, heuristic=None, weight='weight'):
             for nodo in lista :
                 if(len(ordinato) >= k) :
                     break
-                # se il nodo non è stato espanso
-                if nodo[1][3] == False :
-                    # devo controllare se già presente in "ordinato"
-                    presente = False
-                    for n in ordinato :
-                        # faccio un controllo sul primo campo (il nome del nodo)
-                        if nodo[0] == n[0] :
-                            presente = True
-                            # posso anche non continuare il ciclo
-                            break
-                    if presente == False :
-                        ordinato.append(nodo)
+                # se il nodo non è stato espanso e non è presente in "enqueued" lo aggiungo alla lista
+                if nodo[1][3] == False and nodo[0] not in  enqueued :
+                    ordinato.append(nodo)
 
             # se sono entrato nell'if i nodi non sono più ordinati
             ordinato = sorted(ordinato, key=lambda x: x[1][1])
+
+        # ripulisco la mappa in modo da poter caricare i neighbor nell'iterazione successiva
+        enqueued.clear()
 
         # ciclo k volte e faccio push degli elementi con euristica minore
         for x in range(k) :
