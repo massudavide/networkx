@@ -24,7 +24,7 @@ def beam_path(G, source, target, heuristic=None, weight='weight'):
             return 0
 
     # parametro k che mi dice quanti nodi espandere ogni volta
-    k = 20
+    k = 2
 
     push = heappush
     pop = heappop
